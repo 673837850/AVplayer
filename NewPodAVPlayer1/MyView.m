@@ -8,8 +8,7 @@
 
 #import "MyView.h"
 #import <AVFoundation/AVFoundation.h>
-#import "MBProgressHUD.h"
-#import "Masonry.h"
+#import "AVHeader.h"
 
 
 
@@ -103,6 +102,7 @@
     [self.playerLayer displayIfNeeded];
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     [self addKVO];
+    
     [self.player play];
 }
 -(void)stop{
@@ -112,6 +112,7 @@
     [self.playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
     [self.playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
     [self.player removeObserver:self forKeyPath:@"rate"];
+    [self.player removeTimeObserver:self.timeObserver];
    
     if (self.player) {
         [self.player pause];
@@ -146,9 +147,10 @@
         if (current) {
             weakself.currentTime.text = [NSString stringWithFormat:@"%@",[weakself convertTime:current]];
             weakself.playProgress.value = CMTimeGetSeconds(weakself.player.currentItem.currentTime)/CMTimeGetSeconds(weakself.player.currentItem.duration);
-           
+            
         }
     }];
+    
 }
 //将数值转换成时间
 - (NSString *)convertTime:(CGFloat)second{

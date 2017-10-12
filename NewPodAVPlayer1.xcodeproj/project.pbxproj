@@ -60,6 +60,7 @@
 		3E3244D81F8E15B100D1513D /* BigAndSmall.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigAndSmall.xib; sourceTree = "<group>"; };
 		3E3244DA1F8E1E6E00D1513D /* MyviewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyviewDelegate.h; sourceTree = "<group>"; };
 		3E4834A91F8F599900E03613 /* knob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = knob.png; sourceTree = "<group>"; };
+		3E4834AA1F8F613100E03613 /* AVHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVHeader.h; sourceTree = "<group>"; };
 		6803F7991EA4E7ADE920E93F /* libPods-NewPodAVPlayer1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NewPodAVPlayer1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		983450AE49AF797130ED8CE5 /* Pods-NewPodAVPlayer1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewPodAVPlayer1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NewPodAVPlayer1/Pods-NewPodAVPlayer1.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +131,7 @@
 				3E3244A41F8E0EF300D1513D /* ViewController.m */,
 				3E3244D21F8E0F2800D1513D /* MyView.h */,
 				3E3244D31F8E0F2800D1513D /* MyView.m */,
+				3E4834AA1F8F613100E03613 /* AVHeader.h */,
 				3E3244DA1F8E1E6E00D1513D /* MyviewDelegate.h */,
 				3E3244D81F8E15B100D1513D /* BigAndSmall.xib */,
 				3E3244A61F8E0EF400D1513D /* Main.storyboard */,
