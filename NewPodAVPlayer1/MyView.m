@@ -19,6 +19,10 @@
 @property (nonatomic ,strong) AVPlayerItem * playerItem;
 @property (nonatomic ,strong) AVPlayerLayer * playerLayer;
 
+//xib创建的遮盖层
+@property (strong, nonatomic) IBOutlet UIView *coverView;
+
+
 
 @end
 
@@ -43,6 +47,12 @@
         hud.labelText = @"请稍等";
         [hud show:YES];
         
+        _coverView = [[NSBundle mainBundle] loadNibNamed:@"BigAndSmall" owner:self options:nil].lastObject;
+        [self addSubview:_coverView];
+        _coverView.backgroundColor = [UIColor colorWithRed:53/255.0f green:53/255.0f blue:53/255.0f alpha:0.3];
+        
+        
+        
     }
     return self;
 }
@@ -52,9 +62,29 @@
 -(void)pause{
     [self.player pause];
 }
+- (IBAction)back:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(backTheView)]) {
+        [self.delegate backTheView];
+    }
+}
+- (IBAction)zoomTheView:(id)sender {
+    UIButton * bb = (UIButton *)sender;
+    bb.selected = !bb.selected;
+    if (bb.selected) {
+        if ([self.delegate respondsToSelector:@selector(zoomMyViewWithBigOrSamll:)]) {
+            [self.delegate zoomMyViewWithBigOrSamll:MYViewSmall];
+        }
+    }else{
+        if ([self.delegate respondsToSelector:@selector(zoomMyViewWithBigOrSamll:)]) {
+            [self.delegate zoomMyViewWithBigOrSamll:MYViewBig];
+        }
+    }
+}
+
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
+    _coverView.frame = self.bounds;
 }
 -(void)newPlay{
     self.playerAsset=[[AVURLAsset alloc]initWithURL:[NSURL URLWithString:@"http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8"] options:nil];
@@ -89,6 +119,8 @@
     [super drawRect:rect];
     self.playerLayer.player = self.player;
 }
+
+
 //添加KVO
 -(void)addKVO{
     //监听状态属性
@@ -156,7 +188,6 @@
     } else if ([keyPath isEqualToString:@"rate"]){//当rate==0时为暂停,rate==1时为播放,当rate等于负数时为回放
         if ([[change objectForKey:NSKeyValueChangeNewKey]integerValue]==0) {
             NSLog(@"暂停了");
-            [self.player play];
         }else{
             NSLog(@"播放");
         }

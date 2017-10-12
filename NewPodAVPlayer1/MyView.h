@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyviewDelegate.h"
+
 
 @interface MyView : UIView
 
 -(void)play;
 -(void)stop;
 -(void)replaceAsetWithUrl:(NSString *)URL;
+
+@property (nonatomic ,weak) id<MyviewDelegate> delegate;
+
+
 @end

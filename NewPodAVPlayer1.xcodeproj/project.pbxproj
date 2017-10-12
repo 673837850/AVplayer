@@ -16,6 +16,7 @@
 		3E3244BA1F8E0EF400D1513D /* NewPodAVPlayer1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3244B91F8E0EF400D1513D /* NewPodAVPlayer1Tests.m */; };
 		3E3244C51F8E0EF400D1513D /* NewPodAVPlayer1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3244C41F8E0EF400D1513D /* NewPodAVPlayer1UITests.m */; };
 		3E3244D41F8E0F2900D1513D /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3244D31F8E0F2800D1513D /* MyView.m */; };
+		3E3244D91F8E15B100D1513D /* BigAndSmall.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E3244D81F8E15B100D1513D /* BigAndSmall.xib */; };
 		B971C5B71B8FC42D47EBCAEB /* libPods-NewPodAVPlayer1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6803F7991EA4E7ADE920E93F /* libPods-NewPodAVPlayer1.a */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,8 @@
 		3E3244C61F8E0EF400D1513D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E3244D21F8E0F2800D1513D /* MyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
 		3E3244D31F8E0F2800D1513D /* MyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
+		3E3244D81F8E15B100D1513D /* BigAndSmall.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigAndSmall.xib; sourceTree = "<group>"; };
+		3E3244DA1F8E1E6E00D1513D /* MyviewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyviewDelegate.h; sourceTree = "<group>"; };
 		6803F7991EA4E7ADE920E93F /* libPods-NewPodAVPlayer1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NewPodAVPlayer1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		983450AE49AF797130ED8CE5 /* Pods-NewPodAVPlayer1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewPodAVPlayer1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NewPodAVPlayer1/Pods-NewPodAVPlayer1.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,6 +129,8 @@
 				3E3244A41F8E0EF300D1513D /* ViewController.m */,
 				3E3244D21F8E0F2800D1513D /* MyView.h */,
 				3E3244D31F8E0F2800D1513D /* MyView.m */,
+				3E3244DA1F8E1E6E00D1513D /* MyviewDelegate.h */,
+				3E3244D81F8E15B100D1513D /* BigAndSmall.xib */,
 				3E3244A61F8E0EF400D1513D /* Main.storyboard */,
 				3E3244A91F8E0EF400D1513D /* Assets.xcassets */,
 				3E3244AB1F8E0EF400D1513D /* LaunchScreen.storyboard */,
@@ -272,6 +277,7 @@
 			files = (
 				3E3244AD1F8E0EF400D1513D /* LaunchScreen.storyboard in Resources */,
 				3E3244AA1F8E0EF400D1513D /* Assets.xcassets in Resources */,
+				3E3244D91F8E15B100D1513D /* BigAndSmall.xib in Resources */,
 				3E3244A81F8E0EF400D1513D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,7 +519,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LWHSM37E59;
 				INFOPLIST_FILE = NewPodAVPlayer1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = maxtv.NewPodAVPlayer1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -527,7 +535,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LWHSM37E59;
 				INFOPLIST_FILE = NewPodAVPlayer1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = maxtv.NewPodAVPlayer1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
