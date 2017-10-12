@@ -19,8 +19,14 @@
 @property (nonatomic ,strong) AVPlayerItem * playerItem;
 @property (nonatomic ,strong) AVPlayerLayer * playerLayer;
 
+@property (strong, nonatomic) id timeObserver;                      //视频播放时间观察者
+
 //xib创建的遮盖层
 @property (strong, nonatomic) IBOutlet UIView *coverView;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;//缓存进度条
+@property (weak, nonatomic) IBOutlet UILabel *currentTime;//当前时间
+@property (weak, nonatomic) IBOutlet UILabel *totalTime;//总时间
+@property (weak, nonatomic) IBOutlet UISlider *playProgress;//播放进度条
 
 
 
@@ -50,8 +56,8 @@
         _coverView = [[NSBundle mainBundle] loadNibNamed:@"BigAndSmall" owner:self options:nil].lastObject;
         [self addSubview:_coverView];
         _coverView.backgroundColor = [UIColor colorWithRed:53/255.0f green:53/255.0f blue:53/255.0f alpha:0.3];
-        
-        
+        [self.playProgress setThumbImage:[UIImage imageNamed:@"knob"] forState:UIControlStateNormal];
+        [self.playProgress setThumbImage:[UIImage imageNamed:@"knob"] forState:UIControlStateHighlighted];
         
     }
     return self;
@@ -133,7 +139,30 @@
     [self.playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     //监听暂停或者播放中
     [self.player addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew context:nil];
+    //这里设置每秒执行一次
+    __weak __typeof(self) weakself = self;
+    self.timeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 1.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        NSInteger current = CMTimeGetSeconds(time);
+        if (current) {
+            weakself.currentTime.text = [NSString stringWithFormat:@"%@",[weakself convertTime:current]];
+            weakself.playProgress.value = CMTimeGetSeconds(weakself.player.currentItem.currentTime)/CMTimeGetSeconds(weakself.player.currentItem.duration);
+           
+        }
+    }];
 }
+//将数值转换成时间
+- (NSString *)convertTime:(CGFloat)second{
+    NSDate *d = [NSDate dateWithTimeIntervalSince1970:second];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    if (second/3600 >= 1) {
+        [formatter setDateFormat:@"HH:mm:ss"];
+    } else {
+        [formatter setDateFormat:@"mm:ss"];
+    }
+    NSString *showtimeNew = [formatter stringFromDate:d];
+    return showtimeNew;
+}
+#pragma mark -MBProgressHUD的delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud{
     [hud removeFromSuperview];
     hud = nil;
@@ -142,7 +171,6 @@
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     if ([keyPath isEqualToString:@"status"]) {
         AVPlayerItemStatus itemStatus = [[change objectForKey:NSKeyValueChangeNewKey]integerValue];
-        
         switch (itemStatus) {
             case AVPlayerItemStatusUnknown:
             {
@@ -152,6 +180,14 @@
                 break;
             case AVPlayerItemStatusReadyToPlay:
             {
+                NSInteger totalSeconds =  CMTimeGetSeconds(self.playerItem.duration);
+                if (totalSeconds>0) {
+                    self.totalTime.text = [self convertTime:totalSeconds];
+                }else{
+                    self.totalTime.text = @"--:--";
+                }
+                
+                NSLog(@"%ld------",totalSeconds);
                 //播放的工具处于准备播放的状态
                 NSLog(@"AVPlayerItemStatusReadyToPlay");
             }
@@ -174,7 +210,10 @@
         CMTime duration = self.playerItem.duration;
         CGFloat totalDuration = CMTimeGetSeconds(duration);
         //缓存值
-        NSLog(@"%lf--%lf",timeInterval,totalDuration);//（无论直播还是重播，都是在这儿缓存视频，缓存好视频以后播放）
+        self.progressView.progress = timeInterval/totalDuration;
+        NSInteger ppp = CMTimeGetSeconds([self.player currentTime]);
+        NSLog(@"%ld==-----",ppp);
+        //（无论直播还是重播，都是在这儿缓存视频，缓存好视频以后播放）
     } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) { //监听播放器在缓冲数据的状态(缓冲数据为空，而且有效时间内数据无法补充，播放失败)
         NSLog(@"1111111");
         MBProgressHUD * hud = [[MBProgressHUD alloc] initWithView:self];
@@ -191,13 +230,18 @@
         }else{
             NSLog(@"播放");
         }
+    }else if([keyPath isEqualToString:@"currentTime"]){
+        if ([[change objectForKey:NSKeyValueChangeNewKey]integerValue]==0) {
+            NSLog(@"在改变");
+        }else{
+            NSLog(@"没有改变");
+        }
     }
 }
 -(void)replaceAsetWithUrl:(NSString *)URL{
     self.playerAsset = nil;
     self.playerAsset=[[AVURLAsset alloc]initWithURL:[NSURL URLWithString:URL] options: @{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES }];
     [self.playerItem removeObserver:self forKeyPath:@"status"];
-    
     [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
     [self.playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
     [self.playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];

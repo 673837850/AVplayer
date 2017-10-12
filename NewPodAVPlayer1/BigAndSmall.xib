@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +13,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyView">
             <connections>
                 <outlet property="coverView" destination="iN0-l3-epB" id="ljZ-z4-hrp"/>
+                <outlet property="currentTime" destination="Lfq-TJ-DkE" id="bw2-Kd-WVU"/>
+                <outlet property="playProgress" destination="3eF-kf-rv0" id="8tl-WF-BNw"/>
+                <outlet property="progressView" destination="qSY-wW-YDu" id="apn-gq-G5N"/>
+                <outlet property="totalTime" destination="MkU-x8-vHe" id="70r-jL-9im"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -31,10 +36,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCR-Ue-ryj">
-                    <rect key="frame" x="345" y="180" width="48" height="22"/>
+                    <rect key="frame" x="347" y="180" width="46" height="22"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="Ejj-LZ-AWv"/>
-                        <constraint firstAttribute="width" constant="48" id="O69-M3-lXt"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="O69-M3-lXt"/>
                     </constraints>
                     <state key="normal" title="Button"/>
                     <userDefinedRuntimeAttributes>
@@ -44,13 +49,57 @@
                         <action selector="zoomTheView:" destination="-1" eventType="touchUpInside" id="GuK-Vk-s5l"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lfq-TJ-DkE">
+                    <rect key="frame" x="10" y="182.5" width="50" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="oFj-Dl-moW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MkU-x8-vHe">
+                    <rect key="frame" x="287" y="182.5" width="42" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="qAh-vI-rVJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qSY-wW-YDu">
+                    <rect key="frame" x="70" y="190.5" width="207" height="1"/>
+                    <color key="tintColor" red="0.99802595380000003" green="0.40379041430000001" blue="0.3551518917" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="deY-ap-MoL"/>
+                    </constraints>
+                </progressView>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3eF-kf-rv0">
+                    <rect key="frame" x="68" y="170.5" width="211" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="1N2-Vb-beK"/>
+                    </constraints>
+                    <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </slider>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="3eF-kf-rv0" firstAttribute="centerX" secondItem="qSY-wW-YDu" secondAttribute="centerX" id="3BV-0L-zxs"/>
+                <constraint firstItem="qSY-wW-YDu" firstAttribute="centerY" secondItem="Lfq-TJ-DkE" secondAttribute="centerY" id="5ch-Ez-tsr"/>
                 <constraint firstItem="hIP-xX-8Wp" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="62t-wx-byy"/>
+                <constraint firstItem="fCR-Ue-ryj" firstAttribute="leading" secondItem="MkU-x8-vHe" secondAttribute="trailing" constant="18" id="HiK-zr-ied"/>
+                <constraint firstItem="Lfq-TJ-DkE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Hqy-hV-Tsv"/>
+                <constraint firstItem="Lfq-TJ-DkE" firstAttribute="centerY" secondItem="MkU-x8-vHe" secondAttribute="centerY" id="KhY-of-HMh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fCR-Ue-ryj" secondAttribute="bottom" constant="10" id="Nw1-cX-ZCM"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fCR-Ue-ryj" secondAttribute="trailing" constant="10" id="WeK-Qa-PaF"/>
                 <constraint firstItem="hIP-xX-8Wp" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="azi-S0-nSJ"/>
+                <constraint firstItem="qSY-wW-YDu" firstAttribute="leading" secondItem="Lfq-TJ-DkE" secondAttribute="trailing" constant="10" id="d0A-Qn-KjJ"/>
+                <constraint firstItem="MkU-x8-vHe" firstAttribute="leading" secondItem="qSY-wW-YDu" secondAttribute="trailing" constant="10" id="fLp-d5-bWL"/>
+                <constraint firstItem="MkU-x8-vHe" firstAttribute="centerY" secondItem="fCR-Ue-ryj" secondAttribute="centerY" id="fQc-5y-bvU"/>
+                <constraint firstItem="3eF-kf-rv0" firstAttribute="centerY" secondItem="qSY-wW-YDu" secondAttribute="centerY" id="uxS-eA-q7L"/>
+                <constraint firstItem="3eF-kf-rv0" firstAttribute="width" secondItem="qSY-wW-YDu" secondAttribute="width" id="xHI-Jd-Fjg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
