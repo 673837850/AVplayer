@@ -19,8 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRotate:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+
     MyView * vv = [[MyView alloc] init];
     vv.delegate = self;
     [self.view addSubview:vv];
@@ -44,6 +43,9 @@
     [self.view addSubview:bb];
 
     
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
 }
 -(BOOL)prefersStatusBarHidden{
     return YES;// 返回YES表示隐藏，返回NO表示显示
@@ -80,16 +82,7 @@
     [vv play];
 }
 
--(void)changeRotate:(NSNotification *)noti{
-    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait
-        || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
-        //竖屏
-        NSLog(@"竖屏");
-    } else {
-        //横屏
-        NSLog(@"横屏");
-    }
-}
+
 
 
 @end

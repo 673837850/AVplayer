@@ -17,8 +17,10 @@
 @property (nonatomic ,strong) AVURLAsset * playerAsset;
 @property (nonatomic ,strong) AVPlayerItem * playerItem;
 @property (nonatomic ,strong) AVPlayerLayer * playerLayer;
+@property (nonatomic ,assign) CGFloat fps;
 
 @property (strong, nonatomic) id timeObserver;                      //视频播放时间观察者
+@property (nonatomic ,strong) UITapGestureRecognizer * tap;
 
 //xib创建的遮盖层
 @property (strong, nonatomic) IBOutlet UIView *coverView;
@@ -37,11 +39,13 @@
     self = [super init];
     if (self) {
         self.playerAsset=[[AVURLAsset alloc]initWithURL:[NSURL URLWithString:@"http://download.3g.joy.cn/video/236/60236937/1451280942752_hd.mp4"] options:nil];
+        _fps = [[[self.playerAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] nominalFrameRate];
         self.playerItem=[AVPlayerItem playerItemWithAsset:self.playerAsset];
+
         self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
         self.playerLayer = [[AVPlayerLayer alloc] init];
         self.playerLayer.backgroundColor = [UIColor blackColor].CGColor;
-        
+
         self.playerLayer.frame = CGRectMake(0, 0, 320, 180);
         [self.playerLayer displayIfNeeded];
         [self.layer insertSublayer:self.playerLayer atIndex:0];
@@ -57,6 +61,16 @@
         _coverView.backgroundColor = [UIColor colorWithRed:53/255.0f green:53/255.0f blue:53/255.0f alpha:0.3];
         [self.playProgress setThumbImage:[UIImage imageNamed:@"knob"] forState:UIControlStateNormal];
         [self.playProgress setThumbImage:[UIImage imageNamed:@"knob"] forState:UIControlStateHighlighted];
+        
+        //拖动时候触发的方法
+        [self.playProgress addTarget:self action:@selector(handleTouchDown:) forControlEvents:UIControlEventTouchDown];
+        [self.playProgress addTarget:self action:@selector(handleSlide:) forControlEvents:UIControlEventValueChanged];
+        [self.playProgress addTarget:self action:@selector(handleTouchUp:) forControlEvents:UIControlEventTouchUpInside];
+        [self.playProgress addTarget:self action:@selector(handleTouchUp:) forControlEvents:UIControlEventTouchUpOutside];
+         _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
+        [_tap setNumberOfTouchesRequired:1];//一个手指
+        [self.playProgress addGestureRecognizer:_tap];//给slider加一个手势 获得当前点击的位置
+        
         
     }
     return self;
@@ -85,6 +99,8 @@
         }
     }
 }
+
+
 
 -(void)layoutSubviews{
     [super layoutSubviews];
@@ -168,6 +184,43 @@
 -(void)hudWasHidden:(MBProgressHUD *)hud{
     [hud removeFromSuperview];
     hud = nil;
+}
+#pragma mark -slider的点击事件
+- (void)handleTouchDown:(UISlider *)slider{
+    NSLog(@"TouchDown");
+    _tap.enabled = NO;
+    [_player pause];
+
+}
+
+- (void)handleTouchUp:(UISlider *)slider{
+    NSLog(@"TouchUp");
+    _tap.enabled = YES;
+
+    [_player play];
+
+}
+
+- (void)handleSlide:(UISlider *)slider{
+    CMTime time = CMTimeMakeWithSeconds(CMTimeGetSeconds(self.playerItem.asset.duration) * slider.value, _fps);
+    [_player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)recognizer{
+    NSLog(@"Tap");
+    CGPoint touchPoint = [recognizer locationInView:self.playProgress];//获得手势点
+    CGFloat value = touchPoint.x / CGRectGetWidth(self.playProgress.frame);
+    [self.playProgress setValue:value animated:YES];
+
+
+        [_player pause];
+
+    CMTime time = CMTimeMakeWithSeconds(CMTimeGetSeconds(self.playerItem.asset.duration) * value, _fps);//当前手指点击的位置的time
+    [_player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+
+            [_player play];
+
+    }];
 }
 //TODO: KVO
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
