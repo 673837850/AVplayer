@@ -21,6 +21,9 @@
     [super viewDidLoad];
 
     MyView * vv = [[MyView alloc] init];
+    
+    
+    
     vv.delegate = self;
     [self.view addSubview:vv];
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
